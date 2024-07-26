@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rails-app
+  template:
+    metadata:
+      labels:
+        app: rails-app
+    spec:
+      containers:
+      - name: rails-application
+        image: docker.io/bsreenu1999/rails-app
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_USERNAME
+          value: your_database_user
+        - name: DATABASE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: database-config
+              key: DATABASE_HOST
+        - name: DATABASE_PASSWORD
+          value: your_database_password
+        - name: DATABASE_NAME
+          value: your_database_name
+        command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
