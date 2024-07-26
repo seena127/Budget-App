@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-rails
+spec:
+  rules:
+  - host: "domain.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/app"
+        backend:
+          service:
+            name: app-svc
+            port:
+              number: 3000
